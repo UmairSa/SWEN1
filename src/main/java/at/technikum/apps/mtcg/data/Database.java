@@ -1,4 +1,4 @@
-package at.technikum.apps.task.data;
+package at.technikum.apps.mtcg.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

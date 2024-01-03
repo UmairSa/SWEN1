@@ -21,7 +21,7 @@ public class Injector {
 
         TaskRepository taskRepository = new DatabaseTaskRepository();
         TaskService taskService = new TaskService(taskRepository);
-        controllerList.add(new TaskController(taskService));
+        //controllerList.add(new TaskController(taskService));
 
         controllerList.add(new TimeoutController());
 

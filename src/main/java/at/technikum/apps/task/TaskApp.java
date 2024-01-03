@@ -2,6 +2,8 @@ package at.technikum.apps.task;
 
 import at.technikum.apps.task.controller.Controller;
 import at.technikum.apps.task.controller.TaskController;
+import at.technikum.apps.task.entity.Task;
+import at.technikum.apps.task.repository.DatabaseTaskRepository;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -41,7 +43,8 @@ public class TaskApp implements ServerApplication {
                 // return 500 Internal Server Error
             }
         }
-
+        DatabaseTaskRepository dt = new DatabaseTaskRepository();
+        dt.save(new Task("100", "halal", "abc", true));
         Response response = new Response();
         response.setStatus(HttpStatus.NOT_FOUND);
         response.setContentType(HttpContentType.APPLICATION_JSON);
