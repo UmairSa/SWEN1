@@ -1,3 +1,5 @@
+CREATE DATABASE mzcgdb;
+
 CREATE TABLE IF NOT EXISTS task (
     id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -5,6 +7,14 @@ CREATE TABLE IF NOT EXISTS task (
     done BOOLEAN
 );
 
-DROP TABLE task;
+CREATE TABLE Users (
+    UserID SERIAL PRIMARY KEY,
+    Username VARCHAR(255) UNIQUE NOT NULL,
+    Password VARCHAR(255) NOT NULL,
+    Coins INT DEFAULT 0,
+    ELO INT DEFAULT 100
+);
 
-CREATE DATABASE MTCGDB;
+INSERT INTO users (username, password, coins, elo) VALUES ('testuser', 'testpass', 100, 1000);
+
+TRUNCATE users;
