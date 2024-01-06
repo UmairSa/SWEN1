@@ -13,15 +13,13 @@ import java.util.Optional;
 
 public class DatabaseTaskRepository implements TaskRepository {
 
-    private final String FIND_ALL_SQL = "SELECT * FROM task";
-    private final String SAVE_SQL = "INSERT INTO task(id, name, description, done) VALUES(?, ?, ?, ?)";
-
     private final Database database = new Database();
 
     @Override
     public List<Task> findAll() {
         List<Task> tasks = new ArrayList<>();
 
+        String FIND_ALL_SQL = "SELECT * FROM task";
         try (
                 Connection con = database.getConnection();
                 PreparedStatement pstmt = con.prepareStatement(FIND_ALL_SQL);
@@ -50,6 +48,7 @@ public class DatabaseTaskRepository implements TaskRepository {
 
     @Override
     public Task save(Task task) {
+        String SAVE_SQL = "INSERT INTO task(id, name, description, done) VALUES(?, ?, ?, ?)";
         try (
                 Connection con = database.getConnection();
                 PreparedStatement pstmt = con.prepareStatement(SAVE_SQL)
@@ -61,7 +60,7 @@ public class DatabaseTaskRepository implements TaskRepository {
 
             pstmt.execute();
         } catch (SQLException e) {
-            // THOUGHT: how do i handle exceptions (hint: look at the TaskApp)
+            // THOUGHT: how do I handle exceptions (hint: look at the TaskApp)
         }
 
         return task;

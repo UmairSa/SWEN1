@@ -13,19 +13,39 @@ import java.util.Optional;
 
 public class UserRepositoryImpl implements UserRepo {
 
-    private final String FIND_ALL_USERS_SQL = "SELECT * FROM users";
-    private final String SAVE_USERS_SQL = "INSERT INTO users(username, password, coins, elo) VALUES(?, ?, ?, ?)";
     private final Database database = new Database();
+
+    //private static final String FIND_BY_ID_SQL = "SELECT * FROM users WHERE id = ?";
+
+
+    @Override
+    public User save(User user) {
+        String SAVE_USERS_SQL = "INSERT INTO users(username, password, coins, elo) VALUES(?, ?, ?, ?)";
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(SAVE_USERS_SQL)) {
+            pstmt.setString(1, user.getUsername());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setInt(3, user.getCoins());
+            pstmt.setInt(4, user.getElo());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Erstellen fehlgeschlagen, keine Benutzer betroffen");
+            }
+            return user;
+        } catch (SQLException e) {
+            //Fehlerbehandlung
+            //e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public List<User> findAll() {
+
         List<User> users = new ArrayList<>();
 
-        try (
-                Connection con = database.getConnection();
-                PreparedStatement pstmt = con.prepareStatement(FIND_ALL_USERS_SQL);
-                ResultSet rs = pstmt.executeQuery()
-        ) {
+        String FIND_ALL_USERS_SQL = "SELECT * FROM users";
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(FIND_ALL_USERS_SQL); ResultSet rs = pstmt.executeQuery()) {
             while (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("UserID"));
@@ -43,40 +63,72 @@ public class UserRepositoryImpl implements UserRepo {
     }
 
     @Override
-    public User save(User user) {
-        try (
-                Connection con = database.getConnection();
-                PreparedStatement pstmt = con.prepareStatement(SAVE_USERS_SQL);
-        ) {
+    public Optional<User> findById(Integer userid) {
+
+        String FIND_BY_ID_SQL = "SELECT * FROM users WHERE UserID = ?";
+
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(FIND_BY_ID_SQL)) {
+
+            pstmt.setInt(1, userid);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("UserID"));
+                    user.setUsername(rs.getString("Username"));
+                    user.setPassword(rs.getString("Password"));
+                    user.setCoins(rs.getInt("Coins"));
+                    user.setElo(rs.getInt("ELO"));
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            //Fehlerbehandlung
+            //e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+
+    @Override
+    public User update(User user) {
+        String UPDATE_USERS_SQL = "UPDATE users SET Username = ?, Password = ?, Coins = ?, ELO = ? WHERE UserID = ?";
+
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(UPDATE_USERS_SQL)) {
             pstmt.setString(1, user.getUsername());
             pstmt.setString(2, user.getPassword());
             pstmt.setInt(3, user.getCoins());
             pstmt.setInt(4, user.getElo());
+            pstmt.setInt(5, user.getId());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
-                throw new SQLException("Erstellen fehltgeschlagen, keine Benutzer betroffen");
+                throw new SQLException("Aktualisierung fehlgeschlagen, kein User betroffen.");
             }
             return user;
         } catch (SQLException e) {
             //Fehlerbehandlung
-            e.printStackTrace();
+            //e.printStackTrace();
         }
+
         return null;
     }
 
     @Override
-    public Optional<User> findById(Integer integer) {
-        return Optional.empty();
-    }
+    public void deleteById(Integer userid) {
+        String DELETE_USER_SQL = "DELETE FROM users WHERE UserID = ?";
 
-    @Override
-    public User update(User entity) {
-        return null;
-    }
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(DELETE_USER_SQL)) {
+            pstmt.setInt(1, userid);
 
-    @Override
-    public void deleteById(Integer integer) {
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Löschen fehlgeschlagen, kein Benutzer betroffen.");
+            }
+        } catch (SQLException e) {
+            //Fehlerbehandlung
+            //e.printStackTrace();
+        }
 
     }
 
