@@ -19,7 +19,7 @@ public class CurlTest {
         request.setMethod(HttpMethod.POST);
         request.setRoute("http://localhost:10001/users");
         request.setContentType(HttpContentType.APPLICATION_JSON.getMimeType());
-        request.setBody("{\"username\":\"kienboec\", \"password\":\"daniel\"}");
+        request.setBody("{\"username\":\"curluser\", \"password\":\"daniel\"}");
 
         Response response = mtcgApp.handle(request);
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserRepositoryImpl implements UserRepo {
+public class UserRepositoryImpl implements UserRepository {
 
     private final Database database = new Database();
 
@@ -134,6 +134,28 @@ public class UserRepositoryImpl implements UserRepo {
 
     @Override
     public Optional<User> findByUsername(String username) {
+
+        String FIND_BY_USERNAME_SQL = "SELECT * FROM users WHERE username = ?";
+
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(FIND_BY_USERNAME_SQL)) {
+
+            pstmt.setString(1, username);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("UserID"));
+                    user.setUsername(rs.getString("Username"));
+                    user.setPassword(rs.getString("Password"));
+                    user.setCoins(rs.getInt("Coins"));
+                    user.setElo(rs.getInt("ELO"));
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            //Fehlerbehandlung
+            //e.printStackTrace();
+        }
         return Optional.empty();
     }
 }
