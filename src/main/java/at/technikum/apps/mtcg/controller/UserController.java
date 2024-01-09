@@ -45,12 +45,12 @@ public class UserController extends Controller {
             User user = objectMapper.readValue(request.getBody(), User.class);
             User registeredUser = userService.registerUser(user);
 
-            String userJson = objectMapper.writeValueAsString(registeredUser);
+            String message = "User created: " + registeredUser.getUsername();
 
             Response response = new Response();
             response.setStatus(HttpStatus.OK);
             response.setContentType(HttpContentType.APPLICATION_JSON);
-            response.setBody(userJson);
+            response.setBody(message);
 
             return response;
 
@@ -73,11 +73,11 @@ public class UserController extends Controller {
             User loginDetails = objectMapper.readValue(request.getBody(), User.class);
             User loggedInUser = userService.loginUser(loginDetails.getUsername(), loginDetails.getPassword());
 
-            String userJson = objectMapper.writeValueAsString(loggedInUser);
+            String message = "Logged in as: " + loggedInUser.getUsername();
             Response response = new Response();
             response.setStatus(HttpStatus.OK);
             response.setContentType(HttpContentType.APPLICATION_JSON);
-            response.setBody(userJson);
+            response.setBody(message);
 
             return response;
         } catch (IllegalArgumentException e) {

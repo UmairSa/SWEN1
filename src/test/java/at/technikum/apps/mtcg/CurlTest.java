@@ -8,18 +8,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CurlTest {
 
     MtcgApp mtcgApp = new MtcgApp();
-
-
-    /*
-    Just an idea, maybe an alternative to the curl script
-     */
     @Test
     void createUser() {
         Request request = new Request();
         request.setMethod(HttpMethod.POST);
-        request.setRoute("http://localhost:10001/users");
+        request.setRoute("/users");
         request.setContentType(HttpContentType.APPLICATION_JSON.getMimeType());
-        request.setBody("{\"username\":\"curluser\", \"password\":\"daniel\"}");
+        request.setBody("{\"Username\":\"curltestuser\", \"Password\":\"daniel\"}");
 
         Response response = mtcgApp.handle(request);
 

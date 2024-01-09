@@ -2,7 +2,7 @@ package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.Controller;
 import at.technikum.apps.mtcg.controller.UserController;
-import at.technikum.apps.mtcg.repository.UserRepositoryImpl;
+import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
@@ -20,13 +20,13 @@ public class MtcgApp implements ServerApplication {
     private List<Controller> controllers = new ArrayList<>();
 
     public MtcgApp() {
-       controllers.add(new UserController(new UserService(new UserRepositoryImpl())));
+        controllers.add(new UserController(new UserService(new UserRepository())));
     }
 
     @Override
     public Response handle(Request request) {
 
-        for (Controller controller: controllers) {
+        for (Controller controller : controllers) {
             if (!controller.supports(request.getRoute())) {
                 continue;
             }

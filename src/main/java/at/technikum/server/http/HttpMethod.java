@@ -1,5 +1,8 @@
 package at.technikum.server.http;
 
+import lombok.Getter;
+
+@Getter
 public enum HttpMethod {
     GET("GET"),
     POST("POST"),
@@ -12,7 +15,4 @@ public enum HttpMethod {
         this.method = method;
     }
 
-    public String getMethod() {
-        return method;
-    }
 }

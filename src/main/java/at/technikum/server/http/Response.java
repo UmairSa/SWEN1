@@ -1,5 +1,8 @@
 package at.technikum.server.http;
 
+import lombok.Getter;
+
+@Getter
 public class Response {
 
     private int statusCode;
@@ -15,24 +18,8 @@ public class Response {
         this.statusMessage = httpStatus.getMessage();
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    public String getStatusMessage() {
-        return statusMessage;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
     public void setContentType(HttpContentType httpContentType) {
         this.contentType = httpContentType.getMimeType();
-    }
-
-    public String getBody() {
-        return body;
     }
 
     public void setBody(String body) {

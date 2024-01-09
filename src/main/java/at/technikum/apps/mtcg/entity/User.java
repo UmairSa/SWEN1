@@ -10,6 +10,6 @@ public class User {
     private String username;
     @JsonProperty("Password")
     private String password;
-    private int coins;
-    private int elo;
+    private int coins = 20;
+    private int elo = 100;
 }
