@@ -34,6 +34,7 @@ public class UserController extends Controller {
         }
 
         String routeUsername = extractUsernameFromRoute(request.getRoute());
+
         if (routeUsername == null || !validateToken(request, routeUsername)) {
             return unauthorizedResponse();
         }

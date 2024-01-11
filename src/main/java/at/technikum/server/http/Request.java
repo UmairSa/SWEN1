@@ -17,13 +17,13 @@ public class Request {
     private String contentType;
 
     // 0, 17
-    private int contentLength;
 
     // none, "{ "name": "foo" }"
     private String body;
 
-    @Getter
     private String authorization;
+
+    //private int contentLength;
 
     public void setAuthorization(String authorization) { this.authorization = authorization; }
 
@@ -43,11 +43,13 @@ public class Request {
         this.contentType = contentType;
     }
 
-    public void setContentLength(int contentLength) {
-        this.contentLength = contentLength;
-    }
-
     public void setBody(String body) {
         this.body = body;
     }
+
+    /*
+    public void setContentLength(int contentLength) {
+        this.contentLength = contentLength;
+    }
+     */
 }

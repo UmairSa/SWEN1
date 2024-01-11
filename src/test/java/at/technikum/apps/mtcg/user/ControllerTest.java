@@ -14,7 +14,7 @@ public class ControllerTest {
     class UserControllerTest {
 
         private MtcgApp mtcgApp;
-        private String username = "Token"; // Replace with a valid username from your database
+        private String username = "kienboec"; // Replace with a valid username from your database
         private String testToken = "Bearer " + username + "-mtcgToken"; // Replace with a valid token
 
         @BeforeEach
@@ -34,6 +34,35 @@ public class ControllerTest {
 
             assertEquals(HttpStatus.OK.getCode(), response.getStatusCode(), "Response status should be OK");
             assertTrue(response.getBody().contains(username), "Response body should contain user data");
+        }
+
+        @Test
+        void getUserDataWithInvalidToken() {
+            String invalidToken = "Bearer invalidToken";
+
+            Request request = new Request();
+            request.setMethod(HttpMethod.GET);
+            request.setRoute("/users/" + username);
+            request.setAuthorization(invalidToken);
+
+            Response response = mtcgApp.handle(request);
+
+            assertEquals(HttpStatus.UNAUTHORIZED.getCode(), response.getStatusCode(), "Response status should be UNAUTHORIZED for invalid token");
+        }
+
+        @Test
+        void getUserDataWithMismatchedUsernameAndToken() {
+            String mismatchedUsername = "someOtherUser";
+            String mismatchedToken = "Bearer " + mismatchedUsername + "-mtcgToken";
+
+            Request request = new Request();
+            request.setMethod(HttpMethod.GET);
+            request.setRoute("/users/" + username); // 'username' is the expected username
+            request.setAuthorization(mismatchedToken);
+
+            Response response = mtcgApp.handle(request);
+
+            assertEquals(HttpStatus.UNAUTHORIZED.getCode(), response.getStatusCode(), "Response status should be UNAUTHORIZED for mismatched username and token");
         }
     }
 }

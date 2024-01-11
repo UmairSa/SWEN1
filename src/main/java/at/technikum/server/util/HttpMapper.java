@@ -14,22 +14,8 @@ public class HttpMapper {
         request.setMethod(getHttpMethod(httpRequest));
         request.setRoute(getRoute(httpRequest));
         request.setHost(getHttpHeader("Host", httpRequest));
+        request.setAuthorization(getHttpHeader("Authorization",httpRequest));
 
-        // THOUGHT: don't do the content parsing in this method
-        String contentLengthHeader = getHttpHeader("Content-Length", httpRequest);
-        if (null == contentLengthHeader) {
-            return request;
-        }
-
-        int contentLength = Integer.parseInt(contentLengthHeader);
-        request.setContentLength(contentLength);
-
-        if (0 == contentLength) {
-            return request;
-        }
-
-        request.setBody(httpRequest.substring(httpRequest.length() - contentLength));
-        request.setAuthorization(getHttpHeader("Authorization", httpRequest));
         return request;
     }
 
@@ -42,7 +28,6 @@ public class HttpMapper {
                 response.getBody();
     }
 
-    // THOUGHT: Maybe some better place for this logic?
     private static HttpMethod getHttpMethod(String httpRequest) {
         String httpMethod = httpRequest.split(" ")[0];
 
@@ -67,7 +52,31 @@ public class HttpMapper {
         if (!matcher.find()) {
             return null;
         }
-
         return matcher.group(1);
     }
 }
+/*
+        String contentLengthHeader = getHttpHeader("Content-Length", httpRequest);
+        System.out.println(contentLengthHeader);
+        if (null != contentLengthHeader) {
+            return request;
+        }
+
+        int contentLength = Integer.parseInt(contentLengthHeader);
+        request.setContentLength(contentLength);
+
+        if (0 == contentLength) {
+            return request;
+        }
+        String authorizationHeader = getHttpHeader("Authorization", httpRequest);
+        if (null == authorizationHeader) {
+            return request;
+        }
+        request.setAuthorization(authorizationHeader);
+
+         */
+
+
+
+//request.setBody(httpRequest.substring(httpRequest.length() - contentLength));
+//request.setAuthorization(getHttpHeader("Authorization", httpRequest));

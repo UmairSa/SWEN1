@@ -39,7 +39,6 @@ public class RequestHandler implements Runnable {
         in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 
         String httpRequest = getHttpStringFromStream(in);
-
         Request request = HttpMapper.toRequestObject(httpRequest);
         Response response = app.handle(request);
 
@@ -66,6 +65,7 @@ public class RequestHandler implements Runnable {
         String httpRequest = builder.toString();
 
         Pattern regex = Pattern.compile("^Content-Length:\\s(.+)", Pattern.MULTILINE);
+
         Matcher matcher = regex.matcher(httpRequest);
 
         if (!matcher.find()) {

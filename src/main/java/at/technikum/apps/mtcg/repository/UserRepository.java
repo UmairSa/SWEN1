@@ -31,6 +31,31 @@ public class UserRepository {
         return null;
     }
 
+    public Optional<User> findByUsername(String username) {
+
+        String FIND_BY_USERNAME_SQL = "SELECT * FROM users WHERE username = ?";
+
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(FIND_BY_USERNAME_SQL)) {
+
+            pstmt.setString(1, username);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("UserID"));
+                    user.setUsername(rs.getString("Username"));
+                    user.setPassword(rs.getString("Password"));
+                    user.setCoins(rs.getInt("Coins"));
+                    user.setElo(rs.getInt("ELO"));
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     public User update(User user) {
         String UPDATE_USERS_SQL = "UPDATE users SET username = ?, password = ?, coins = ?, elo = ? WHERE userid = ?";
 
@@ -65,30 +90,5 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public Optional<User> findByUsername(String username) {
-
-        String FIND_BY_USERNAME_SQL = "SELECT * FROM users WHERE username = ?";
-
-        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(FIND_BY_USERNAME_SQL)) {
-
-            pstmt.setString(1, username);
-
-            try (ResultSet rs = pstmt.executeQuery()) {
-                if (rs.next()) {
-                    User user = new User();
-                    user.setId(rs.getInt("UserID"));
-                    user.setUsername(rs.getString("Username"));
-                    user.setPassword(rs.getString("Password"));
-                    user.setCoins(rs.getInt("Coins"));
-                    user.setElo(rs.getInt("ELO"));
-                    return Optional.of(user);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
     }
 }
