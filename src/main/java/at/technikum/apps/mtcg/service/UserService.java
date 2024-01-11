@@ -5,6 +5,8 @@ import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.util.PasswordHashingUtil;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 
 @RequiredArgsConstructor
 public class UserService {
@@ -31,6 +33,11 @@ public class UserService {
         }
         return user;
     }
+
+    public Optional<User> findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
 
     /*
     public User updateUser(User user) {

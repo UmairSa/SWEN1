@@ -20,8 +20,11 @@ public class MtcgApp implements ServerApplication {
     private List<Controller> controllers = new ArrayList<>();
 
     public MtcgApp() {
-        controllers.add(new UserController(new UserService(new UserRepository())));
+        UserRepository userRepository = new UserRepository();
+        UserService userService = new UserService(userRepository);
+        controllers.add(new UserController(userService, userRepository));
     }
+
 
     @Override
     public Response handle(Request request) {

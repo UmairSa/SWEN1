@@ -1,4 +1,4 @@
-package at.technikum.apps.mtcg;
+package at.technikum.apps.mtcg.user;
 
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.mtcg.repository.UserRepository;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserRepoTest {
     //User for tests
-    String userName = "UnitTest";
+    String userName = "Token";
 
     @Test
     void save_CreateUser() {
@@ -63,10 +63,3 @@ public class UserRepoTest {
         assertFalse(userRepository.findByUsername(userName).isPresent(), "Der Benutzer sollte nach dem Löschen nicht mehr vorhanden sein.");
     }
 }
-/*
-    @Test
-    void findAll_AndPrintUsers() {
-        UserRepository userRepository = new UserRepository();
-        userRepository.findAll().forEach(System.out::println);
-    }
-*/

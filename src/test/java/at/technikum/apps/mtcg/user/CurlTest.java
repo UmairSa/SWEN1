@@ -1,5 +1,6 @@
-package at.technikum.apps.mtcg;
+package at.technikum.apps.mtcg.user;
 
+import at.technikum.apps.mtcg.MtcgApp;
 import at.technikum.server.http.*;
 import org.junit.jupiter.api.Test;
 

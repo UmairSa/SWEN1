@@ -22,6 +22,11 @@ public class Request {
     // none, "{ "name": "foo" }"
     private String body;
 
+    @Getter
+    private String authorization;
+
+    public void setAuthorization(String authorization) { this.authorization = authorization; }
+
     public void setMethod(HttpMethod httpMethod) {
         this.method = httpMethod.getMethod();
     }
