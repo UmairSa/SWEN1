@@ -25,7 +25,6 @@ public class MtcgApp implements ServerApplication {
         controllers.add(new UserController(userService, userRepository));
     }
 
-
     @Override
     public Response handle(Request request) {
 

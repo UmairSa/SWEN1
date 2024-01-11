@@ -57,9 +57,7 @@ public class RequestHandler implements Runnable {
 
         String inputLine;
         while ((inputLine = in.readLine()) != null && !inputLine.equals("")) {
-            builder
-                    .append(inputLine)
-                    .append(System.lineSeparator());
+            builder.append(inputLine).append(System.lineSeparator());
         }
 
         String httpRequest = builder.toString();
@@ -81,6 +79,4 @@ public class RequestHandler implements Runnable {
 
         return builder.toString();
     }
-
-
 }

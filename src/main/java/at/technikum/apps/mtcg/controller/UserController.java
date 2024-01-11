@@ -38,19 +38,13 @@ public class UserController extends Controller {
         if (routeUsername == null || !validateToken(request, routeUsername)) {
             return unauthorizedResponse();
         }
-
         if (request.getRoute().startsWith("/users/")) {
-            switch (request.getMethod()) {
-                case "GET":
-                    return getUserData(routeUsername);
-                case "PUT":
-                    // Implement logic for PUT method
-                    // return updateUserData(request, routeUsername);
-                default:
-                    return badRequestResponse();
-            }
+            return switch (request.getMethod()) {
+                case "GET" -> getUserData(routeUsername);
+                case "PUT" -> updateUserData(request, routeUsername);
+                default -> badRequestResponse();
+            };
         }
-
         return badRequestResponse();
     }
 
@@ -135,22 +129,54 @@ public class UserController extends Controller {
         }
     }
 
+    private Response updateUserData(Request request, String routeUsername) {
+        try {
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            System.out.println("REQUEST BODY: " + request.getBody());
+            User updatedInfo = objectMapper.readValue(request.getBody(), User.class);
+
+            System.out.println("NACH GETBODY");
+            Optional<User> userOpt = userService.findUserByUsername(routeUsername);
+            System.out.println("USERNAME: " + routeUsername);
+            if (userOpt.isEmpty()) {
+                throw new IllegalArgumentException("User not found");
+            }
+
+            User user = userOpt.get();
+            user.setName(updatedInfo.getName());
+            user.setBio(updatedInfo.getBio());
+            user.setImage(updatedInfo.getImage());
+
+            userService.updateUser(user);
+
+            String message = "User updated: " + user.getUsername();
+            Response response = new Response();
+            response.setStatus(HttpStatus.OK);
+            response.setContentType(HttpContentType.APPLICATION_JSON);
+            response.setBody(message);
+            return response;
+
+        } catch (IllegalArgumentException e) {
+            return createResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            return status();
+        }
+    }
+
     private boolean validateToken(Request request, String routeUsername) {
         String token = request.getAuthorization();
         if (token == null) {
             return false;
         }
-
         String expectedTokenPrefix = "Bearer ";
         if (!token.startsWith(expectedTokenPrefix)) {
             return false;
         }
-
         String tokenUsername = token.substring(expectedTokenPrefix.length()).replace("-mtcgToken", "");
         if (!tokenUsername.equals(routeUsername)) {
             return false;
         }
-
         return userRepository.findByUsername(tokenUsername).isPresent();
     }
 
@@ -166,6 +192,7 @@ public class UserController extends Controller {
     private Response badRequestResponse() {
         return createResponse(HttpStatus.BAD_REQUEST, "Bad request");
     }
+
     private Response unauthorizedResponse() {
         return createResponse(HttpStatus.UNAUTHORIZED, "Unauthorized access");
     }
@@ -177,6 +204,7 @@ public class UserController extends Controller {
         response.setBody(body);
         return response;
     }
+
     private Response status() {
         Response response = new Response();
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -184,4 +212,3 @@ public class UserController extends Controller {
         return response;
     }
 }
-

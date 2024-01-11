@@ -10,7 +10,6 @@ public class Database {
     private static final String USERNAME = "postgres";
     private static final String PASSWORD = "postgres";
 
-
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }

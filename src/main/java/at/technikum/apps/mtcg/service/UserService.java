@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-
 @RequiredArgsConstructor
 public class UserService {
 
@@ -21,7 +20,6 @@ public class UserService {
 
         String hashedPassword = PasswordHashingUtil.hashPassword(user.getPassword());
         user.setPassword(hashedPassword);
-
         return userRepository.save(user);
     }
 
@@ -38,21 +36,14 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
-
-    /*
-    public User updateUser(User user) {
-
+    public void updateUser(User user) {
         // Prüfen, ob der Benutzer existiert
         User existingUser = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new IllegalArgumentException("Benutzer nicht gefunden."));
 
-        // Daten aktualisieren, z.B. Passwort, falls geändert
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            String hashedPassword = PasswordHashingUtil.hashPassword(user.getPassword());
-            existingUser.setPassword(hashedPassword);
-        }
-        // Weitere Felder entsprechend aktualisieren
-        return userRepository.update(existingUser);
-    }
+        existingUser.setName(user.getName());
+        existingUser.setBio(user.getBio());
+        existingUser.setImage(user.getImage());
 
-     */
+        userRepository.update(existingUser);
+    }
 }

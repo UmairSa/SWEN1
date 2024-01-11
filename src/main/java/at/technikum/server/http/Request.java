@@ -23,7 +23,7 @@ public class Request {
 
     private String authorization;
 
-    //private int contentLength;
+    private int contentLength;
 
     public void setAuthorization(String authorization) { this.authorization = authorization; }
 
@@ -47,9 +47,7 @@ public class Request {
         this.body = body;
     }
 
-    /*
     public void setContentLength(int contentLength) {
         this.contentLength = contentLength;
     }
-     */
 }

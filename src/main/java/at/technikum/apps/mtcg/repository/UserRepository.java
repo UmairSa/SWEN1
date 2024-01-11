@@ -47,6 +47,9 @@ public class UserRepository {
                     user.setPassword(rs.getString("Password"));
                     user.setCoins(rs.getInt("Coins"));
                     user.setElo(rs.getInt("ELO"));
+                    user.setName(rs.getString("Name"));
+                    user.setBio(rs.getString("Bio"));
+                    user.setImage(rs.getString("Image"));
                     return Optional.of(user);
                 }
             }
@@ -57,14 +60,13 @@ public class UserRepository {
     }
 
     public User update(User user) {
-        String UPDATE_USERS_SQL = "UPDATE users SET username = ?, password = ?, coins = ?, elo = ? WHERE userid = ?";
+        String UPDATE_USERS_SQL = "UPDATE users SET name = ?, bio = ?, image = ? WHERE username = ?";
 
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(UPDATE_USERS_SQL)) {
-            pstmt.setString(1, user.getUsername());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setInt(3, user.getCoins());
-            pstmt.setInt(4, user.getElo());
-            pstmt.setInt(5, user.getId());
+            pstmt.setString(1, user.getName());
+            pstmt.setString(2, user.getBio());
+            pstmt.setString(3, user.getImage());
+            pstmt.setString(4, user.getUsername());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
@@ -74,7 +76,6 @@ public class UserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
