@@ -1,4 +1,4 @@
-package at.technikum.apps.mtcg.user;
+package at.technikum.apps.mtcg.UserTests;
 
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.mtcg.repository.UserRepository;
@@ -49,7 +49,6 @@ public class UserRepoTest {
         User updatedUser = userRepository.update(userToUpdate);
 
         assertNotNull(updatedUser, "Der aktualisierte Benutzer sollte nicht null sein.");
-        //assertEquals("updatedUsername", updatedUser.getUsername(), "Der User-Name sollte aktualisiert worden sein.");
         assertEquals(101, updatedUser.getElo(), "Der ELO-Wert sollte aktualisiert worden sein.");
 
         System.out.println("NEUE USERDATEN: " + updatedUser);

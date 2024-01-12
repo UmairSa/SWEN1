@@ -64,14 +64,10 @@ public class UserController extends Controller {
             return response;
 
         } catch (IllegalArgumentException e) {
-            Response response = new Response();
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setContentType(HttpContentType.TEXT_PLAIN);
-            response.setBody(e.getMessage());
-            return response;
+            return status(HttpStatus.BAD_REQUEST, e.getMessage());
 
         } catch (Exception e) {
-            return status();
+            return status(HttpStatus.INTERNAL_SERVER_ERROR, "An internal error occurred");
         }
     }
 
@@ -89,14 +85,10 @@ public class UserController extends Controller {
 
             return response;
         } catch (IllegalArgumentException e) {
-            Response response = new Response();
-            response.setStatus(HttpStatus.BAD_REQUEST);
-            response.setContentType(HttpContentType.TEXT_PLAIN);
-            response.setBody(e.getMessage());
-            return response;
+            return status(HttpStatus.BAD_REQUEST, e.getMessage());
 
         } catch (Exception e) {
-            return status();
+            return status(HttpStatus.INTERNAL_SERVER_ERROR, "An internal error occurred");
         }
     }
 
@@ -118,14 +110,10 @@ public class UserController extends Controller {
             return response;
 
         } catch (IllegalArgumentException e) {
-            Response response = new Response();
-            response.setStatus(HttpStatus.NOT_FOUND);
-            response.setContentType(HttpContentType.TEXT_PLAIN);
-            response.setBody(e.getMessage());
-            return response;
+            return status(HttpStatus.NOT_FOUND, e.getMessage());
 
         } catch (Exception e) {
-            return status();
+            return status(HttpStatus.INTERNAL_SERVER_ERROR, "An internal error occurred");
         }
     }
 
@@ -133,10 +121,8 @@ public class UserController extends Controller {
         try {
 
             ObjectMapper objectMapper = new ObjectMapper();
-            System.out.println("REQUEST BODY: " + request.getBody());
             User updatedInfo = objectMapper.readValue(request.getBody(), User.class);
 
-            System.out.println("NACH GETBODY");
             Optional<User> userOpt = userService.findUserByUsername(routeUsername);
             System.out.println("USERNAME: " + routeUsername);
             if (userOpt.isEmpty()) {
@@ -158,9 +144,9 @@ public class UserController extends Controller {
             return response;
 
         } catch (IllegalArgumentException e) {
-            return createResponse(HttpStatus.BAD_REQUEST, e.getMessage());
+            return status(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (Exception e) {
-            return status();
+            return status(HttpStatus.INTERNAL_SERVER_ERROR, "An internal error occurred");
         }
     }
 
@@ -198,17 +184,6 @@ public class UserController extends Controller {
     }
 
     private Response createResponse(HttpStatus status, String body) {
-        Response response = new Response();
-        response.setStatus(status);
-        response.setContentType(HttpContentType.TEXT_PLAIN);
-        response.setBody(body);
-        return response;
-    }
-
-    private Response status() {
-        Response response = new Response();
-        response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        response.setBody("etwas ist schiefgelaufen");
-        return response;
+        return status(status, body);
     }
 }

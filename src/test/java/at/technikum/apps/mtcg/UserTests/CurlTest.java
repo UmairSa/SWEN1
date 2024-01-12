@@ -1,4 +1,4 @@
-package at.technikum.apps.mtcg.user;
+package at.technikum.apps.mtcg.UserTests;
 
 import at.technikum.apps.mtcg.MtcgApp;
 import at.technikum.server.http.*;
