@@ -13,7 +13,7 @@ public class CardRepository {
     private static final Logger logger = Logger.getLogger(CardRepository.class.getName());
 
     public Card save(Card card) {
-        String SAVE_CARD_SQL = "INSERT INTO cards (cardid, name, damage, elementtype, cardtype, ownerid) VALUES (?, ?, ?, ?, ?, ?)";
+        String SAVE_CARD_SQL = "INSERT INTO cards (cardid, name, damage, elementtype, cardtype, ownerid, indeck, packageid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(SAVE_CARD_SQL)) {
             pstmt.setObject(1, card.getCardId());
@@ -22,6 +22,8 @@ public class CardRepository {
             pstmt.setString(4, card.getElementType());
             pstmt.setString(5, card.getCardType());
             pstmt.setObject(6, card.getOwnerId());
+            pstmt.setBoolean(7, card.isInDeck());
+            pstmt.setObject(8, card.getPackId());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {

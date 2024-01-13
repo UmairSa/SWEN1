@@ -9,6 +9,5 @@ import java.util.UUID;
 public class Pack {
     private UUID packId;
     private double price = 5;
-    private Integer userId;
     private List<Card> cards;
 }

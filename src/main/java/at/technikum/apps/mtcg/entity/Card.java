@@ -15,7 +15,7 @@ public class Card {
     private String elementType;
     @JsonProperty("CardType")
     private String cardType;
+    private boolean inDeck;
     private Integer ownerId; // FK to users table
     private UUID packId; // FK to packages table
-    private boolean inDeck;
 }
