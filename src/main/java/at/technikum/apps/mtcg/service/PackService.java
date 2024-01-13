@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class PackageService {
+public class PackService {
 
     private final PackRepository packRepository;
     private final CardRepository cardRepository;

@@ -5,9 +5,12 @@ import at.technikum.apps.mtcg.entity.Pack;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public class PackRepository {
     private final Database database = new Database();
+    private static final Logger logger = Logger.getLogger(PackRepository.class.getName());
+
     public Pack save(Pack pack) {
         String SAVE_PACKAGE_SQL = "INSERT INTO packages (packageid, price) VALUES (?, 5)";
 
@@ -20,8 +23,9 @@ public class PackRepository {
             }
             return pack;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.severe("Error creating package: " + e.getMessage());
+            return null;
         }
-        return null;
     }
+
 }

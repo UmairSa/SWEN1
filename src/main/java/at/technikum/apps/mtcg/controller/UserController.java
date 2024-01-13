@@ -174,16 +174,4 @@ public class UserController extends Controller {
         }
         return null;
     }
-
-    private Response badRequestResponse() {
-        return createResponse(HttpStatus.BAD_REQUEST, "Bad request");
-    }
-
-    private Response unauthorizedResponse() {
-        return createResponse(HttpStatus.UNAUTHORIZED, "Unauthorized access");
-    }
-
-    private Response createResponse(HttpStatus status, String body) {
-        return status(status, body);
-    }
 }

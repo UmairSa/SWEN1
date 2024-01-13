@@ -4,7 +4,7 @@ import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.mtcg.entity.Pack;
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackRepository;
-import at.technikum.apps.mtcg.service.PackageService;
+import at.technikum.apps.mtcg.service.PackService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,12 +27,12 @@ public class PackageServiceTest {
     @Mock
     private CardRepository cardRepository;
 
-    private PackageService packageService;
+    private PackService packageService;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        packageService = new PackageService(packRepository, cardRepository);
+        packageService = new PackService(packRepository, cardRepository);
     }
 
     @Test
