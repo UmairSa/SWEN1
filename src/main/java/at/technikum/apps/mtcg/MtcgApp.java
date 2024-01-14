@@ -2,12 +2,14 @@ package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.Controller;
 import at.technikum.apps.mtcg.controller.PackController;
+import at.technikum.apps.mtcg.controller.TransactionController;
 import at.technikum.apps.mtcg.controller.UserController;
 import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackRepository;
 import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.PackService;
+import at.technikum.apps.mtcg.service.TransactionService;
 import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
@@ -33,6 +35,9 @@ public class MtcgApp implements ServerApplication {
         CardRepository cardRepository = new CardRepository();
         PackService packService = new PackService(packRepository, cardRepository);
         controllers.add(new PackController(packService));
+
+        TransactionService transactionService = new TransactionService(userRepository, packRepository, cardRepository);
+        controllers.add(new TransactionController(transactionService));
     }
 
     @Override

@@ -4,7 +4,10 @@ import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.task.data.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -14,7 +17,6 @@ public class CardRepository {
 
     public Card save(Card card) {
         String SAVE_CARD_SQL = "INSERT INTO cards (cardid, name, damage, elementtype, cardtype, ownerid, indeck, packageid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(SAVE_CARD_SQL)) {
             pstmt.setObject(1, card.getCardId());
             pstmt.setString(2, card.getName());
@@ -23,7 +25,7 @@ public class CardRepository {
             pstmt.setString(5, card.getCardType());
             pstmt.setObject(6, card.getOwnerId());
             pstmt.setBoolean(7, card.isInDeck());
-            pstmt.setObject(8, card.getPackId());
+            pstmt.setInt(8, card.getPackId());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
@@ -31,14 +33,13 @@ public class CardRepository {
             }
             return card;
         } catch (SQLException e) {
-            logger.severe("Error ccreating card: " + e.getMessage());
+            logger.severe("Error creating card: " + e.getMessage());
         }
         return null;
     }
 
     public void updateCardOwner(UUID cardId, Integer ownerId) {
         String UPDATE_OWNER_SQL = "UPDATE cards SET ownerid = ? WHERE cardid = ?";
-
         try (Connection con = database.getConnection();
              PreparedStatement pstmt = con.prepareStatement(UPDATE_OWNER_SQL)) {
             pstmt.setObject(1, ownerId);
@@ -52,4 +53,33 @@ public class CardRepository {
             logger.severe("Error updating card owner: " + e.getMessage());
         }
     }
+
+    public List<Card> findByPackId(int packId) {
+        List<Card> cards = new ArrayList<>();
+        String QUERY = "SELECT * FROM cards WHERE packageid = ?";
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(QUERY)) {
+            pstmt.setInt(1, packId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Card card = new Card();
+                    // Populate the card object from the result set
+                    card.setCardId(UUID.fromString(rs.getString("cardid")));
+                    card.setName(rs.getString("name"));
+                    card.setDamage(rs.getDouble("damage"));
+                    card.setElementType(rs.getString("elementtype"));
+                    card.setCardType(rs.getString("cardtype"));
+                    card.setOwnerId(rs.getObject("ownerid") != null ? rs.getInt("ownerid") : null);
+                    card.setInDeck(rs.getBoolean("indeck"));
+                    card.setPackId(rs.getInt("packageid"));
+
+                    cards.add(card);
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Error finding cards by package ID: " + e.getMessage());
+        }
+        return cards;
+    }
+
+
 }

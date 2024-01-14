@@ -7,7 +7,6 @@ import at.technikum.apps.mtcg.repository.PackRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 public class PackService {

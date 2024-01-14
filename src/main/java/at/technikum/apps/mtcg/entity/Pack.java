@@ -10,6 +10,6 @@ import java.util.UUID;
 public class Pack {
     @JsonProperty("PackageId")
     private int packId;
-    private double price = 5;
+    private int price = 5;
     private List<Card> cards;
 }
