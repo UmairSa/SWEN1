@@ -14,19 +14,14 @@ public class PackService {
 
     private final PackRepository packRepository;
     private final CardRepository cardRepository;
-    public Pack createPack(List<Card> cards) {
+    public Pack createPack(Pack pack) {
 
-        UUID packID = UUID.randomUUID();
+        packRepository.save(pack);
 
-        Pack newPack = new Pack();
-        newPack.setPackId(packID);
-        newPack.setPrice(5.0);
-        packRepository.save(newPack);
-
-        for (Card card : cards) {
-            card.setPackId(packID);
+        for (Card card : pack.getCards()) {
+            card.setPackId(pack.getPackId());
             cardRepository.save(card);
         }
-        return newPack;
+        return pack;
     }
 }

@@ -1,5 +1,6 @@
 package at.technikum.apps.mtcg.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -7,7 +8,8 @@ import java.util.UUID;
 
 @Data
 public class Pack {
-    private UUID packId;
+    @JsonProperty("PackageId")
+    private int packId;
     private double price = 5;
     private List<Card> cards;
 }

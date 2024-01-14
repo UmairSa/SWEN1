@@ -39,9 +39,8 @@ public class PackController extends Controller{
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
-            List<Card> cards = Arrays.asList(objectMapper.readValue(request.getBody(), Card[].class));
-
-            Pack newPack = packService.createPack(cards);
+            Pack pack = objectMapper.readValue(request.getBody(), Pack.class);
+            Pack newPack = packService.createPack(pack);
 
             String message = "Package created successfully. Package ID: " + newPack.getPackId();
             return createResponse(HttpStatus.OK, message, HttpContentType.APPLICATION_JSON);

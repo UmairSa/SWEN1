@@ -168,9 +168,8 @@ public class UserController extends Controller {
 
     private String extractUsernameFromRoute(String route) {
         String[] parts = route.split("/");
-        // Expecting route format like "/users/username"
         if (parts.length >= 3 && parts[1].equals("users")) {
-            return parts[2]; // The username part
+            return parts[2]; //username part
         }
         return null;
     }

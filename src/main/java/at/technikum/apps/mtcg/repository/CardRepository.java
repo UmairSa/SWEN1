@@ -52,5 +52,4 @@ public class CardRepository {
             logger.severe("Error updating card owner: " + e.getMessage());
         }
     }
-
 }
