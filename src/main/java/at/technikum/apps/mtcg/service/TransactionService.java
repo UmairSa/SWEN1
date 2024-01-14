@@ -24,16 +24,14 @@ public class TransactionService {
             return false;
         }
 
-        user.setCoins(user.getCoins() - (int)pack.getPrice());
+        user.setCoins(user.getCoins() - pack.getPrice());
         userRepository.update(user);
-
-        packRepository.updatePackageOwner(pack.getPackId(), user.getId());
 
         // Fetch and update the owner of each card in the package
         List<Card> cards = cardRepository.findByPackId(pack.getPackId());
         for (Card card : cards) {
             card.setOwnerId(user.getId());
-            card.setInDeck(false); // Assuming the card is not in the deck initially
+            card.setInDeck(false);
             cardRepository.updateCardOwner(card.getCardId(), user.getId());
         }
         return true;

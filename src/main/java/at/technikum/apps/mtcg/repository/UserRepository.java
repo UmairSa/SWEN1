@@ -60,13 +60,14 @@ public class UserRepository {
     }
 
     public User update(User user) {
-        String UPDATE_USERS_SQL = "UPDATE users SET name = ?, bio = ?, image = ? WHERE username = ?";
+        String UPDATE_USERS_SQL = "UPDATE users SET name = ?, bio = ?, image = ?, coins = ? WHERE username = ?";
 
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(UPDATE_USERS_SQL)) {
             pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getBio());
             pstmt.setString(3, user.getImage());
-            pstmt.setString(4, user.getUsername());
+            pstmt.setInt(4, user.getCoins());
+            pstmt.setString(5, user.getUsername());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {

@@ -36,7 +36,6 @@ public class PackRepository {
                     Pack pack = new Pack();
                     pack.setPackId(rs.getInt("packageid"));
                     pack.setPrice(rs.getInt("price"));
-                    // Optionally populate the 'cards' field if needed
                     return pack;
                 }
             }
@@ -45,8 +44,9 @@ public class PackRepository {
         }
         return null;
     }
+    /*
     public void updatePackageOwner(int packageId, int ownerId) {
-        String UPDATE_PACKAGE_OWNER_SQL = "UPDATE packages SET userid = ? WHERE packageid = ?";
+        String UPDATE_PACKAGE_OWNER_SQL = "UPDATE cards SET ownerid = ? WHERE packageid = ?";
 
         try (Connection con = database.getConnection();
              PreparedStatement pstmt = con.prepareStatement(UPDATE_PACKAGE_OWNER_SQL)) {
@@ -61,8 +61,10 @@ public class PackRepository {
             logger.severe("Error updating package owner: " + e.getMessage());
         }
     }
+
+     */
     public boolean isPackageAcquired(int packageId) {
-        String CHECK_PACKAGE_SQL = "SELECT count(*) FROM packages WHERE packageid = ? AND userid IS NOT NULL";
+        String CHECK_PACKAGE_SQL = "SELECT count(*) FROM cards WHERE packageid = ? AND ownerid IS NOT NULL";
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(CHECK_PACKAGE_SQL)) {
             pstmt.setInt(1, packageId);
             try (ResultSet rs = pstmt.executeQuery()) {
