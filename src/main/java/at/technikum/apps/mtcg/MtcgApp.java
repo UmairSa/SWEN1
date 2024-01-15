@@ -4,10 +4,7 @@ import at.technikum.apps.mtcg.controller.*;
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackRepository;
 import at.technikum.apps.mtcg.repository.UserRepository;
-import at.technikum.apps.mtcg.service.CardService;
-import at.technikum.apps.mtcg.service.PackService;
-import at.technikum.apps.mtcg.service.TransactionService;
-import at.technikum.apps.mtcg.service.UserService;
+import at.technikum.apps.mtcg.service.*;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -38,6 +35,9 @@ public class MtcgApp implements ServerApplication {
 
         CardService cardService = new CardService(cardRepository);
         controllers.add(new CardController(cardService, userService));
+
+        DeckService deckService = new DeckService(new CardRepository());
+        controllers.add(new DeckController(deckService, userService));
     }
 
     @Override

@@ -2,10 +2,8 @@ package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.task.data.Database;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -53,53 +51,55 @@ public class CardRepository {
             logger.severe("Error updating card owner: " + e.getMessage());
         }
     }
-
-    public List<Card> findByPackId(int packId) {
+    private Card createCardFromResultSet(ResultSet rs) throws SQLException {
+        Card card = new Card();
+        card.setCardId(UUID.fromString(rs.getString("cardid")));
+        card.setName(rs.getString("name"));
+        card.setDamage(rs.getDouble("damage"));
+        card.setElementType(rs.getString("elementtype"));
+        card.setCardType(rs.getString("cardtype"));
+        card.setInDeck(rs.getBoolean("indeck"));
+        card.setOwnerId(rs.getObject("ownerid") != null ? rs.getInt("ownerid") : null);
+        card.setPackId(rs.getInt("packageid"));
+        return card;
+    }
+    private List<Card> findCards(String query, int id) {
         List<Card> cards = new ArrayList<>();
-        String QUERY = "SELECT * FROM cards WHERE packageid = ?";
-        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(QUERY)) {
-            pstmt.setInt(1, packId);
+        try (Connection con = database.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, id);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    Card card = new Card();
-                    card.setCardId(UUID.fromString(rs.getString("cardid")));
-                    card.setName(rs.getString("name"));
-                    card.setDamage(rs.getDouble("damage"));
-                    card.setElementType(rs.getString("elementtype"));
-                    card.setCardType(rs.getString("cardtype"));
-                    card.setInDeck(rs.getBoolean("indeck"));
-                    card.setOwnerId(rs.getObject("ownerid") != null ? rs.getInt("ownerid") : null);
-                    card.setPackId(rs.getInt("packageid"));
-                    cards.add(card);
+                    cards.add(createCardFromResultSet(rs));
                 }
             }
         } catch (SQLException e) {
-            logger.severe("Error finding cards by package ID: " + e.getMessage());
+            logger.severe("Error finding cards: " + e.getMessage());
         }
         return cards;
     }
+
+    public List<Card> findByPackId(int packId) {
+        return findCards("SELECT * FROM cards WHERE packageid = ?", packId);
+    }
+
     public List<Card> findByOwnerId(int ownerId) {
-        List<Card> cards = new ArrayList<>();
-        String QUERY = "SELECT * FROM cards WHERE ownerid = ?";
-        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(QUERY)) {
-            pstmt.setInt(1, ownerId);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                while (rs.next()) {
-                    Card card = new Card();
-                    card.setCardId(UUID.fromString(rs.getString("cardid")));
-                    card.setName(rs.getString("name"));
-                    card.setDamage(rs.getDouble("damage"));
-                    card.setElementType(rs.getString("elementtype"));
-                    card.setCardType(rs.getString("cardtype"));
-                    card.setInDeck(rs.getBoolean("indeck"));
-                    card.setOwnerId(rs.getObject("ownerid") != null ? rs.getInt("ownerid") : null);
-                    card.setPackId(rs.getInt("packageid"));
-                    cards.add(card);
-                }
-            }
+        return findCards("SELECT * FROM cards WHERE ownerid = ?", ownerId);
+    }
+
+    public List<Card> findDeckByUserId(int userId) {
+        return findCards("SELECT * FROM cards WHERE ownerid = ? AND indeck = TRUE", userId);
+    }
+    public void configureDeck(int userId, List<UUID> cardIds) {
+        String UPDATE_DECK = "UPDATE cards SET indeck = CASE WHEN cardid = ANY (?) THEN TRUE ELSE FALSE END WHERE ownerid = ?";
+        try (Connection con = database.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(UPDATE_DECK)) {
+            Array cardIdArray = con.createArrayOf("UUID", cardIds.toArray());
+            pstmt.setArray(1, cardIdArray);
+            pstmt.setInt(2, userId);
+            pstmt.executeUpdate();
         } catch (SQLException e) {
-            logger.severe("Error finding cards by owner ID: " + e.getMessage());
+            logger.severe("Error configuring deck for user ID " + userId + ": " + e.getMessage());
         }
-        return cards;
     }
 }
