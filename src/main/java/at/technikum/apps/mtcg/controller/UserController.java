@@ -8,17 +8,13 @@ import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class UserController extends Controller {
     private final UserService userService;
     private final UserRepository userRepository;
-
-    public UserController(UserService userService, UserRepository userRepository) {
-        this.userService = userService;
-        this.userRepository = userRepository;
-    }
 
     @Override
     public boolean supports(String route) {
@@ -166,6 +162,7 @@ public class UserController extends Controller {
         return userRepository.findByUsername(tokenUsername).isPresent();
     }
 
+
     private String extractUsernameFromRoute(String route) {
         String[] parts = route.split("/");
         if (parts.length >= 3 && parts[1].equals("users")) {
@@ -173,4 +170,6 @@ public class UserController extends Controller {
         }
         return null;
     }
+
+
 }

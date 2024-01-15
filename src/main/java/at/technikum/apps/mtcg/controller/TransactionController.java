@@ -5,6 +5,7 @@ import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +38,8 @@ public class TransactionController extends Controller {
             }
 
             ObjectMapper objectMapper = new ObjectMapper();
-            Map<String, Object> requestData = objectMapper.readValue(request.getBody(), Map.class);
+            Map<String, Object> requestData = objectMapper.readValue(request.getBody(), new TypeReference<>() {
+            });
             Integer packageId = (Integer) requestData.get("PackageId");
 
             if (packageId == null) {
@@ -54,15 +56,5 @@ public class TransactionController extends Controller {
         } catch (IOException e) {
             return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred: " + e.getMessage(), HttpContentType.TEXT_PLAIN);
         }
-    }
-    private String extractUsernameFromToken(String token) {
-        if (token == null) {
-            return null;
-        }
-        String expectedTokenPrefix = "Bearer ";
-        if (!token.startsWith(expectedTokenPrefix)) {
-            return null;
-        }
-        return token.substring(expectedTokenPrefix.length()).replace("-mtcgToken", "");
     }
 }

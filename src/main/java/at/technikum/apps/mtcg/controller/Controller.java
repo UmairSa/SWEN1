@@ -4,8 +4,7 @@ import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
 import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 public abstract class Controller {
     public abstract boolean supports(String route);
@@ -32,6 +31,15 @@ public abstract class Controller {
         return createResponse(status, message, HttpContentType.TEXT_PLAIN);
     }
 
+    protected String extractUsernameFromToken(String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            return null;
+        }
+        // Assuming the token format is "Bearer username-mtcgToken"
+        return token.substring(7).replace("-mtcgToken", "");
+    }
+
+    /*
     protected String serializeToJson(Object object) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -40,4 +48,6 @@ public abstract class Controller {
             throw new RuntimeException("JSON serialization error", e);
         }
     }
+
+     */
 }

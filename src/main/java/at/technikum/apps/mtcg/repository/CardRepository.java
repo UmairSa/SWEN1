@@ -62,16 +62,14 @@ public class CardRepository {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     Card card = new Card();
-                    // Populate the card object from the result set
                     card.setCardId(UUID.fromString(rs.getString("cardid")));
                     card.setName(rs.getString("name"));
                     card.setDamage(rs.getDouble("damage"));
                     card.setElementType(rs.getString("elementtype"));
                     card.setCardType(rs.getString("cardtype"));
-                    card.setOwnerId(rs.getObject("ownerid") != null ? rs.getInt("ownerid") : null);
                     card.setInDeck(rs.getBoolean("indeck"));
+                    card.setOwnerId(rs.getObject("ownerid") != null ? rs.getInt("ownerid") : null);
                     card.setPackId(rs.getInt("packageid"));
-
                     cards.add(card);
                 }
             }
@@ -80,6 +78,28 @@ public class CardRepository {
         }
         return cards;
     }
-
-
+    public List<Card> findByOwnerId(int ownerId) {
+        List<Card> cards = new ArrayList<>();
+        String QUERY = "SELECT * FROM cards WHERE ownerid = ?";
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(QUERY)) {
+            pstmt.setInt(1, ownerId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Card card = new Card();
+                    card.setCardId(UUID.fromString(rs.getString("cardid")));
+                    card.setName(rs.getString("name"));
+                    card.setDamage(rs.getDouble("damage"));
+                    card.setElementType(rs.getString("elementtype"));
+                    card.setCardType(rs.getString("cardtype"));
+                    card.setInDeck(rs.getBoolean("indeck"));
+                    card.setOwnerId(rs.getObject("ownerid") != null ? rs.getInt("ownerid") : null);
+                    card.setPackId(rs.getInt("packageid"));
+                    cards.add(card);
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Error finding cards by owner ID: " + e.getMessage());
+        }
+        return cards;
+    }
 }

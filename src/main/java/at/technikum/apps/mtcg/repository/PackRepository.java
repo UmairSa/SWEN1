@@ -44,25 +44,6 @@ public class PackRepository {
         }
         return null;
     }
-    /*
-    public void updatePackageOwner(int packageId, int ownerId) {
-        String UPDATE_PACKAGE_OWNER_SQL = "UPDATE cards SET ownerid = ? WHERE packageid = ?";
-
-        try (Connection con = database.getConnection();
-             PreparedStatement pstmt = con.prepareStatement(UPDATE_PACKAGE_OWNER_SQL)) {
-            pstmt.setInt(1, ownerId);
-            pstmt.setInt(2, packageId);
-
-            int affectedRows = pstmt.executeUpdate();
-            if (affectedRows == 0) {
-                logger.warning("Updating package owner failed, no rows affected.");
-            }
-        } catch (SQLException e) {
-            logger.severe("Error updating package owner: " + e.getMessage());
-        }
-    }
-
-     */
     public boolean isPackageAcquired(int packageId) {
         String CHECK_PACKAGE_SQL = "SELECT count(*) FROM cards WHERE packageid = ? AND ownerid IS NOT NULL";
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(CHECK_PACKAGE_SQL)) {

@@ -9,9 +9,6 @@ import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class PackController extends Controller{
 
     private final PackService packService;
