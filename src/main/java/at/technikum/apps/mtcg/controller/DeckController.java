@@ -14,8 +14,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class DeckController extends Controller{
@@ -26,7 +25,7 @@ public class DeckController extends Controller{
 
     @Override
     public boolean supports(String route) {
-        return route.equals("/deck");
+        return route.equals("/deck") || route.equals("/deck/format");
     }
     @Override
     public Response handle(Request request) {
@@ -36,6 +35,10 @@ public class DeckController extends Controller{
         }
 
         User user = userService.findUserByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (request.getRoute().equals("/deck/format")) {
+            return getDeckInDifferentFormat(user);
+        }
 
         return switch (request.getMethod()) {
             case "GET" -> getDeck(user);
@@ -55,6 +58,34 @@ public class DeckController extends Controller{
             return status(HttpStatus.INTERNAL_SERVER_ERROR, "An internal error occurred");
         }
     }
+
+    private Response getDeckInDifferentFormat(User user) {
+        try {
+            List<Card> deck = deckService.getDeckByUserId(user.getId());
+            // Transform the deck into the desired format
+            String formattedDeck = formatDeck(deck);
+            return createResponse(HttpStatus.OK, formattedDeck, HttpContentType.APPLICATION_JSON);
+        } catch (Exception e) {
+            logger.severe("Error fetching formatted deck: " + e.getMessage());
+            return status(HttpStatus.INTERNAL_SERVER_ERROR, "An internal error occurred");
+        }
+    }
+
+    private String formatDeck(List<Card> deck) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<Map<String, String>> formattedDeck = new ArrayList<>();
+
+        for (Card card : deck) {
+            Map<String, String> formattedCard = new HashMap<>();
+            //formattedCard.put("ID", String.valueOf(card.getCardId()));
+            formattedCard.put("Name", card.getName());
+            formattedCard.put("Damage", String.valueOf(card.getDamage()));
+            formattedDeck.add(formattedCard);
+        }
+        return objectMapper.writeValueAsString(formattedDeck);
+    }
+
+
     private Response configureDeck(Request request, User user) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
@@ -75,7 +106,4 @@ public class DeckController extends Controller{
             return status(HttpStatus.INTERNAL_SERVER_ERROR, "An internal error occurred");
         }
     }
-
-
-
 }
