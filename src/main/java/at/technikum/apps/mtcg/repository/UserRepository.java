@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class UserRepository {
@@ -88,7 +90,7 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
-
+    //---------------------------------------------------------- User Management ---------------------------------------------------------
     public UserStats getUserStats(int userId) {
         String query = "SELECT wins, losses, elo FROM users WHERE userid = ?";
         try (Connection con = database.getConnection();
@@ -110,7 +112,23 @@ public class UserRepository {
         }
         return null;
     }
-
-
+    //---------------------------------------------------------- User Stats ---------------------------------------------------------
+    public List<ScoreboardEntry> getScoreboard() {
+        List<ScoreboardEntry> scoreboard = new ArrayList<>();
+        String query = "SELECT username, elo FROM users ORDER BY elo DESC";
+        try (Connection con = database.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String username = rs.getString("username");
+                    int elo = rs.getInt("elo");
+                    scoreboard.add(new ScoreboardEntry(username, elo));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return scoreboard;
+    }
 
 }
