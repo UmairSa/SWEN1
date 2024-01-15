@@ -2,7 +2,6 @@ package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.task.data.Database;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +10,6 @@ import java.util.Optional;
 
 public class UserRepository {
     private final Database database = new Database();
-
     public User save(User user) {
         String SAVE_USERS_SQL = "INSERT INTO users(username, password, coins, elo) VALUES(?, ?, ?, ?)";
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(SAVE_USERS_SQL)) {
@@ -30,7 +28,6 @@ public class UserRepository {
         }
         return null;
     }
-
     public Optional<User> findByUsername(String username) {
 
         String FIND_BY_USERNAME_SQL = "SELECT * FROM users WHERE username = ?";
@@ -58,7 +55,6 @@ public class UserRepository {
         }
         return Optional.empty();
     }
-
     public User update(User user) {
         String UPDATE_USERS_SQL = "UPDATE users SET name = ?, bio = ?, image = ?, coins = ? WHERE username = ?";
 
@@ -79,7 +75,6 @@ public class UserRepository {
         }
         return null;
     }
-
     public void deleteByUsername(String userName) {
         String DELETE_USER_SQL = "DELETE FROM users WHERE username = ?";
 
@@ -93,4 +88,29 @@ public class UserRepository {
             e.printStackTrace();
         }
     }
+
+    public UserStats getUserStats(int userId) {
+        String query = "SELECT wins, losses, elo FROM users WHERE userid = ?";
+        try (Connection con = database.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setInt(1, userId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    int wins = rs.getInt("wins");
+                    int losses = rs.getInt("losses");
+                    int elo = rs.getInt("elo");
+                    int gamesPlayed = wins + losses;
+                    double winPercentage = gamesPlayed > 0 ? (double) wins / gamesPlayed * 100 : 0;
+
+                    return new UserStats(wins, losses, gamesPlayed, winPercentage, elo);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 }

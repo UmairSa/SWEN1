@@ -38,6 +38,8 @@ public class MtcgApp implements ServerApplication {
 
         DeckService deckService = new DeckService(new CardRepository());
         controllers.add(new DeckController(deckService, userService));
+
+        controllers.add(new StatsController(userService));
     }
 
     @Override

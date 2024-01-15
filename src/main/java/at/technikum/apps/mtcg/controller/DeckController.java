@@ -77,7 +77,6 @@ public class DeckController extends Controller{
 
         for (Card card : deck) {
             Map<String, String> formattedCard = new HashMap<>();
-            //formattedCard.put("ID", String.valueOf(card.getCardId()));
             formattedCard.put("Name", card.getName());
             formattedCard.put("Damage", String.valueOf(card.getDamage()));
             formattedDeck.add(formattedCard);

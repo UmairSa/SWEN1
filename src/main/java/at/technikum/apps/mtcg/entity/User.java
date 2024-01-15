@@ -27,4 +27,7 @@ public class User {
 
     @JsonProperty("Image")
     private String image;
+
+    private int wins;
+    private int losses;
 }

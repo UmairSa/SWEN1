@@ -2,6 +2,7 @@ package at.technikum.apps.mtcg.service;
 
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.mtcg.repository.UserRepository;
+import at.technikum.apps.mtcg.repository.UserStats;
 import at.technikum.apps.mtcg.util.PasswordHashingUtil;
 import lombok.RequiredArgsConstructor;
 
@@ -46,4 +47,13 @@ public class UserService {
 
         userRepository.update(existingUser);
     }
+
+    public UserStats getUserStats(String username) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        return userRepository.getUserStats(user.getId());
+    }
+
+
+
+
 }
