@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserService {
-
     private final UserRepository userRepository;
+
     public User registerUser(User user) throws IllegalArgumentException {
 
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {

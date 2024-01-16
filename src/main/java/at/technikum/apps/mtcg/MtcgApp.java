@@ -3,6 +3,7 @@ package at.technikum.apps.mtcg;
 import at.technikum.apps.mtcg.controller.*;
 import at.technikum.apps.mtcg.repository.CardRepository;
 import at.technikum.apps.mtcg.repository.PackRepository;
+import at.technikum.apps.mtcg.repository.TradeRepository;
 import at.technikum.apps.mtcg.repository.UserRepository;
 import at.technikum.apps.mtcg.service.*;
 import at.technikum.server.ServerApplication;
@@ -17,7 +18,6 @@ import java.util.List;
 
 @Data
 public class MtcgApp implements ServerApplication {
-
     private List<Controller> controllers = new ArrayList<>();
 
     public MtcgApp() {
@@ -42,6 +42,10 @@ public class MtcgApp implements ServerApplication {
         controllers.add(new StatsController(userService));
 
         controllers.add(new ScoreboardController(userService));
+
+        TradeRepository tradeRepository = new TradeRepository();
+        TradeService tradeService = new TradeService(tradeRepository, cardRepository);
+        controllers.add(new TradeController(tradeService, userService));
     }
 
     @Override

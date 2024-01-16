@@ -6,6 +6,7 @@ import at.technikum.apps.task.data.Database;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -77,6 +78,37 @@ public class CardRepository {
             logger.severe("Error finding cards: " + e.getMessage());
         }
         return cards;
+    }
+    public boolean isCardInDeck(UUID cardId) {
+        String query = "SELECT COUNT(*) FROM cards WHERE cardid = ? AND indeck = TRUE";
+        try (Connection con = database.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(query)) {
+            pstmt.setObject(1, cardId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0; // If count is greater than 0, card is in a deck
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Error checking if card is in deck: " + e.getMessage());
+        }
+        return false;
+    }
+
+    public Optional<Card> findById(UUID cardId) {
+        String FIND_BY_ID_SQL = "SELECT * FROM cards WHERE cardid = ?";
+        try (Connection con = database.getConnection();
+             PreparedStatement pstmt = con.prepareStatement(FIND_BY_ID_SQL)) {
+            pstmt.setObject(1, cardId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(createCardFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            logger.severe("Error finding card by ID: " + e.getMessage());
+        }
+        return Optional.empty();
     }
 
     public List<Card> findByPackId(int packId) {
