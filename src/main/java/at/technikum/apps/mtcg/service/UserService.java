@@ -1,9 +1,9 @@
 package at.technikum.apps.mtcg.service;
 
 import at.technikum.apps.mtcg.entity.User;
-import at.technikum.apps.mtcg.repository.ScoreboardEntry;
+import at.technikum.apps.mtcg.entity.Scoreboard;
 import at.technikum.apps.mtcg.repository.UserRepository;
-import at.technikum.apps.mtcg.repository.UserStats;
+import at.technikum.apps.mtcg.entity.UserStats;
 import at.technikum.apps.mtcg.util.PasswordHashingUtil;
 import lombok.RequiredArgsConstructor;
 
@@ -51,7 +51,7 @@ public class UserService {
         return userRepository.getUserStats(user.getId());
     }
     //---------------------------------------------------------- User Stats ---------------------------------------------------------
-    public List<ScoreboardEntry> getScoreboard() {
+    public List<Scoreboard> getScoreboard() {
         return userRepository.getScoreboard();
     }
 

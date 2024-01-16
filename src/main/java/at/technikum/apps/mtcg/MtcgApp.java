@@ -1,10 +1,7 @@
 package at.technikum.apps.mtcg;
 
 import at.technikum.apps.mtcg.controller.*;
-import at.technikum.apps.mtcg.repository.CardRepository;
-import at.technikum.apps.mtcg.repository.PackRepository;
-import at.technikum.apps.mtcg.repository.TradeRepository;
-import at.technikum.apps.mtcg.repository.UserRepository;
+import at.technikum.apps.mtcg.repository.*;
 import at.technikum.apps.mtcg.service.*;
 import at.technikum.server.ServerApplication;
 import at.technikum.server.http.HttpContentType;
@@ -46,6 +43,10 @@ public class MtcgApp implements ServerApplication {
         TradeRepository tradeRepository = new TradeRepository();
         TradeService tradeService = new TradeService(tradeRepository, cardRepository);
         controllers.add(new TradeController(tradeService, userService));
+
+        BattleRepository battleRepository = new BattleRepository();
+        BattleService battleService = new BattleService(battleRepository, userRepository, cardRepository);
+        controllers.add(new BattleController(battleService));
     }
 
     @Override

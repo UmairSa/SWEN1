@@ -35,19 +35,7 @@ public abstract class Controller {
         if (token == null || !token.startsWith("Bearer ")) {
             return null;
         }
-        // Assuming the token format is "Bearer username-mtcgToken"
+        //format "Bearer [username]-mtcgToken"
         return token.substring(7).replace("-mtcgToken", "");
     }
-
-    /*
-    protected String serializeToJson(Object object) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("JSON serialization error", e);
-        }
-    }
-
-     */
 }

@@ -1,4 +1,4 @@
-package at.technikum.apps.mtcg.repository;
+package at.technikum.apps.mtcg.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -50,8 +50,6 @@ public class RequestHandler implements Runnable {
         in.close();
         client.close();
     }
-
-    // THOUGHT: create a SocketReader class
     private String getHttpStringFromStream(BufferedReader in) throws IOException {
         StringBuilder builder = new StringBuilder();
 

@@ -1,6 +1,6 @@
 package at.technikum.apps.mtcg.controller;
 
-import at.technikum.apps.mtcg.repository.ScoreboardEntry;
+import at.technikum.apps.mtcg.entity.Scoreboard;
 import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -8,19 +8,15 @@ import at.technikum.server.http.Request;
 import at.technikum.server.http.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-
 import java.util.List;
 
 @RequiredArgsConstructor
 public class ScoreboardController extends Controller{
-
     private final UserService userService;
-
     @Override
     public boolean supports(String route) {
         return route.equals("/scoreboard");
     }
-
     @Override
     public Response handle(Request request) {
         if (!request.getMethod().equals("GET")) {
@@ -32,7 +28,7 @@ public class ScoreboardController extends Controller{
             return unauthorizedResponse();
         }
         try {
-            List<ScoreboardEntry> scoreboard = userService.getScoreboard();
+            List<Scoreboard> scoreboard = userService.getScoreboard();
             ObjectMapper objectMapper = new ObjectMapper();
             String scoreboardJson = objectMapper.writeValueAsString(scoreboard);
 

@@ -18,7 +18,6 @@ import java.util.*;
 import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class DeckController extends Controller{
-
     private final DeckService deckService;
     private final UserService userService;
     private static final Logger logger = Logger.getLogger(CardRepository.class.getName());

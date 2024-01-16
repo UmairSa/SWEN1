@@ -1,6 +1,6 @@
 package at.technikum.apps.mtcg.controller;
 
-import at.technikum.apps.mtcg.repository.UserStats;
+import at.technikum.apps.mtcg.entity.UserStats;
 import at.technikum.apps.mtcg.service.UserService;
 import at.technikum.server.http.HttpContentType;
 import at.technikum.server.http.HttpStatus;
@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class StatsController extends Controller{
-
     private final UserService userService;
-
-
     @Override
     public boolean supports(String route) {
         return route.equals("/stats");
@@ -26,7 +23,6 @@ public class StatsController extends Controller{
         if (username == null) {
             return unauthorizedResponse();
         }
-
         try {
             UserStats stats = userService.getUserStats(username);
             ObjectMapper objectMapper = new ObjectMapper();

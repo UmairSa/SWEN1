@@ -1,6 +1,8 @@
 package at.technikum.apps.mtcg.repository;
 
+import at.technikum.apps.mtcg.entity.Scoreboard;
 import at.technikum.apps.mtcg.entity.User;
+import at.technikum.apps.mtcg.entity.UserStats;
 import at.technikum.apps.task.data.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -57,15 +59,44 @@ public class UserRepository {
         }
         return Optional.empty();
     }
+    public Optional<User> findById(int id) {
+        String FIND_BY_ID_SQL = "SELECT * FROM users WHERE userid = ?";
+
+        try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(FIND_BY_ID_SQL)) {
+            pstmt.setInt(1, id);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    User user = new User();
+                    user.setId(rs.getInt("UserID"));
+                    user.setUsername(rs.getString("Username"));
+                    user.setPassword(rs.getString("Password"));
+                    user.setCoins(rs.getInt("Coins"));
+                    user.setElo(rs.getInt("ELO"));
+                    user.setName(rs.getString("Name"));
+                    user.setBio(rs.getString("Bio"));
+                    user.setImage(rs.getString("Image"));
+                    return Optional.of(user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
     public User update(User user) {
-        String UPDATE_USERS_SQL = "UPDATE users SET name = ?, bio = ?, image = ?, coins = ? WHERE username = ?";
+        String UPDATE_USERS_SQL = "UPDATE users SET name = ?, bio = ?, image = ?, coins = ?, wins = ?, losses = ?, elo = ?  WHERE username = ?";
 
         try (Connection con = database.getConnection(); PreparedStatement pstmt = con.prepareStatement(UPDATE_USERS_SQL)) {
             pstmt.setString(1, user.getName());
             pstmt.setString(2, user.getBio());
             pstmt.setString(3, user.getImage());
             pstmt.setInt(4, user.getCoins());
-            pstmt.setString(5, user.getUsername());
+            pstmt.setInt(5, user.getWins());
+            pstmt.setInt(6, user.getLosses());
+            pstmt.setInt(7, user.getElo());
+            pstmt.setString(8, user.getUsername());
 
             int affectedRows = pstmt.executeUpdate();
             if (affectedRows == 0) {
@@ -113,8 +144,8 @@ public class UserRepository {
         return null;
     }
     //---------------------------------------------------------- User Stats ---------------------------------------------------------
-    public List<ScoreboardEntry> getScoreboard() {
-        List<ScoreboardEntry> scoreboard = new ArrayList<>();
+    public List<Scoreboard> getScoreboard() {
+        List<Scoreboard> scoreboard = new ArrayList<>();
         String query = "SELECT username, elo FROM users ORDER BY elo DESC";
         try (Connection con = database.getConnection();
              PreparedStatement pstmt = con.prepareStatement(query)) {
@@ -122,7 +153,7 @@ public class UserRepository {
                 while (rs.next()) {
                     String username = rs.getString("username");
                     int elo = rs.getInt("elo");
-                    scoreboard.add(new ScoreboardEntry(username, elo));
+                    scoreboard.add(new Scoreboard(username, elo));
                 }
             }
         } catch (SQLException e) {
@@ -130,5 +161,4 @@ public class UserRepository {
         }
         return scoreboard;
     }
-
 }
