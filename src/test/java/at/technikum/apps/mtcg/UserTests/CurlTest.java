@@ -15,7 +15,7 @@ public class CurlTest {
         request.setMethod(HttpMethod.POST);
         request.setRoute("/users");
         request.setContentType(HttpContentType.APPLICATION_JSON.getMimeType());
-        request.setBody("{\"Username\":\"curltestuser\", \"Password\":\"daniel\"}");
+        request.setBody("{\"Username\":\"curltestuser6\", \"Password\":\"daniel\"}");
 
         Response response = mtcgApp.handle(request);
 

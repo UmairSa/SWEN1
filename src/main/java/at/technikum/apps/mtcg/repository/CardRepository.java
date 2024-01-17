@@ -2,6 +2,7 @@ package at.technikum.apps.mtcg.repository;
 
 import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.task.data.Database;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+@RequiredArgsConstructor
 public class CardRepository {
     private final Database database = new Database();
     private static final Logger logger = Logger.getLogger(CardRepository.class.getName());

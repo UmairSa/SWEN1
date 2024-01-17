@@ -30,6 +30,7 @@ public class BattleRepository {
         }
     }
 
+    /*
     public Optional<Battle> findById(int battleId) {
         String sql = "SELECT * FROM battle WHERE battleid = ?";
         try (Connection con = database.getConnection();
@@ -52,11 +53,5 @@ public class BattleRepository {
         }
         return Optional.empty();
     }
-
-
-
-
-
-
-
+*/
 }

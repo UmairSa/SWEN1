@@ -27,7 +27,7 @@ public class TransactionService {
         user.setCoins(user.getCoins() - pack.getPrice());
         userRepository.update(user);
 
-        // Fetch and update the owner of each card in the package
+        // Fetch and update owner of each card in the package
         List<Card> cards = cardRepository.findByPackId(pack.getPackId());
         for (Card card : cards) {
             card.setOwnerId(user.getId());

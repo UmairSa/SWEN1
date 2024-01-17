@@ -1,4 +1,4 @@
-package at.technikum.apps.mtcg.UserTests;
+package at.technikum.apps.mtcg.ControllerTests;
 
 import at.technikum.apps.mtcg.MtcgApp;
 import at.technikum.apps.mtcg.entity.User;
@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ControllerTest {
+public class UserControllerTest {
     @Nested
-    class UserControllerTest {
+    class UserControllerTestNest {
 
         private MtcgApp mtcgApp;
         private final String username = "kienboec"; // Replace with a valid username from your database
