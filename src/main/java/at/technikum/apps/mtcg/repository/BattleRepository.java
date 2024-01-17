@@ -1,12 +1,11 @@
 package at.technikum.apps.mtcg.repository;
 
+import at.technikum.apps.mtcg.data.Database;
 import at.technikum.apps.mtcg.entity.Battle;
-import at.technikum.apps.task.data.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 public class BattleRepository {
     private final Database database = new Database();

@@ -1,7 +1,7 @@
 package at.technikum.apps.mtcg.repository;
 
+import at.technikum.apps.mtcg.data.Database;
 import at.technikum.apps.mtcg.entity.Card;
-import at.technikum.apps.task.data.Database;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.*;

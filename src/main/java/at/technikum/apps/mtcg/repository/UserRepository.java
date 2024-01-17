@@ -1,9 +1,9 @@
 package at.technikum.apps.mtcg.repository;
 
+import at.technikum.apps.mtcg.data.Database;
 import at.technikum.apps.mtcg.entity.Scoreboard;
 import at.technikum.apps.mtcg.entity.User;
 import at.technikum.apps.mtcg.entity.UserStats;
-import at.technikum.apps.task.data.Database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

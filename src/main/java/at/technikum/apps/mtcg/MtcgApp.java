@@ -9,7 +9,6 @@ import at.technikum.server.http.Response;
 import lombok.Data;
 import java.util.Arrays;
 import java.util.List;
-
 @Data
 public class MtcgApp implements ServerApplication {
     private final List<Controller> controllers;
