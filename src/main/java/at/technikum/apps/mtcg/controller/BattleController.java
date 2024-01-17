@@ -17,7 +17,6 @@ public class BattleController extends Controller {
     private final BattleService battleService;
     private final Map<String, String> waitingPlayers = new HashMap<>(); // Map to store waiting players
 
-
     @Override
     public boolean supports(String route) {
         return route.startsWith("/battles");

@@ -120,7 +120,6 @@ public class UserController extends Controller {
             User updatedInfo = objectMapper.readValue(request.getBody(), User.class);
 
             Optional<User> userOpt = userService.findUserByUsername(routeUsername);
-            System.out.println("USERNAME: " + routeUsername);
             if (userOpt.isEmpty()) {
                 throw new IllegalArgumentException("User not found");
             }
