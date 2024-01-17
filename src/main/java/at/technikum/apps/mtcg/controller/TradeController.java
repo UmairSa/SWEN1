@@ -19,7 +19,6 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class TradeController extends Controller{
     private static final Logger logger = Logger.getLogger(TradeController.class.getName());
-
     private final TradeService tradeService;
     private final UserService userService;
     @Override

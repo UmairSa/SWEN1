@@ -7,12 +7,15 @@ import java.net.Socket;
 public class Server {
 
     private ServerSocket server;
-
     private final ServerApplication app;
 
     public Server(ServerApplication app) {
         this.app = app;
     }
+
+    //The server listens for incoming connections using a ServerSocket
+    //When a connection is accepted (server.accept()), it creates a new RequestHandler object to process the request.
+    //It then wraps the RequestHandler in a Thread object and starts the thread (thread.start()).
 
     public void start() {
         try {

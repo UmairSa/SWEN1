@@ -9,7 +9,7 @@ import java.sql.Timestamp;
 
 public class Battle {
     private int battleId;
-    @NonNull
+    @NonNull    //field must not be null
     private int player1Id;
     @NonNull
     private int player2Id;

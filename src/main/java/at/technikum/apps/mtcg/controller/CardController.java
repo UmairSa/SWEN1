@@ -15,11 +15,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class CardController extends Controller{
-
     private final CardService cardService;
     private final UserService userService;
-
-
     @Override
     public boolean supports(String route) {
         return route.startsWith("/cards");

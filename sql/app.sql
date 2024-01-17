@@ -1,6 +1,12 @@
 CREATE DATABASE mtcgdb;
 
 DROP TABLE users CASCADE;
+DROP TABLE packages cascade;
+drop table cards cascade;
+drop table battle cascade;
+drop table trade cascade;
+
+
 CREATE TABLE IF NOT EXISTS users
 (
     userid   SERIAL PRIMARY KEY,
@@ -15,14 +21,14 @@ CREATE TABLE IF NOT EXISTS users
     losses   INT DEFAULT 0
 );
 
-DROP TABLE packages cascade;
+
 CREATE TABLE IF NOT EXISTS packages
 (
     packageid INT PRIMARY KEY,
     price     INT DEFAULT 5 NOT NULL
 );
 
-drop table cards cascade;
+
 CREATE TABLE IF NOT EXISTS cards
 (
     cardid      UUID PRIMARY KEY,
@@ -35,7 +41,6 @@ CREATE TABLE IF NOT EXISTS cards
     packageid   INT REFERENCES packages (packageid) ON DELETE SET NULL
 );
 
-drop table trade cascade;
 CREATE TABLE IF NOT EXISTS trade
 (
     tradeid          UUID PRIMARY KEY,
@@ -46,7 +51,6 @@ CREATE TABLE IF NOT EXISTS trade
     user2id          INT REFERENCES users (userid)
 );
 
-drop table battle cascade;
 CREATE TABLE IF NOT EXISTS battle
 (
     battleid     SERIAL PRIMARY KEY,

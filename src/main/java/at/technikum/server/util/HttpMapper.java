@@ -88,7 +88,7 @@ public class HttpMapper {
         }
         request.setAuthorization(authorizationHeader);
 
-         */
+*/
 
 //request.setBody(httpRequest.substring(httpRequest.length() - contentLength));
 //request.setAuthorization(getHttpHeader("Authorization", httpRequest));

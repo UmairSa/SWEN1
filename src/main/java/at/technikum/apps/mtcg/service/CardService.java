@@ -8,11 +8,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class CardService {
-
     private final CardRepository cardRepository;
-
     public List<Card> getCardsByUserId(int userId) {
         return cardRepository.findByOwnerId(userId);
     }
-
 }

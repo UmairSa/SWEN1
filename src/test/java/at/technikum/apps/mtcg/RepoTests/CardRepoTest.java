@@ -1,8 +1,8 @@
 package at.technikum.apps.mtcg.RepoTests;
 
+import at.technikum.apps.mtcg.data.Database;
 import at.technikum.apps.mtcg.entity.Card;
 import at.technikum.apps.mtcg.repository.CardRepository;
-import at.technikum.apps.task.data.Database;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -122,10 +122,9 @@ public class CardRepoTest {
         UUID mockUUID = UUID.randomUUID();
         when(connection.prepareStatement(any(String.class))).thenReturn(preparedStatement);
         when(preparedStatement.executeQuery()).thenReturn(resultSet);
-        when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false); // Simulate two cards found
+        when(resultSet.next()).thenReturn(true).thenReturn(true).thenReturn(false);
         when(resultSet.getString("cardid")).thenReturn(mockUUID.toString());
-        when(resultSet.getString("name")).thenReturn("WaterSprite"); // Mock name
-        // Mock other necessary fields like damage, elementType, cardType, etc.
+        when(resultSet.getString("name")).thenReturn("WaterSprite");
 
         List<Card> cards = cardRepository.findByOwnerId(ownerId);
 
@@ -133,5 +132,4 @@ public class CardRepoTest {
         assertEquals(2, cards.size());
         verify(preparedStatement).setInt(1, ownerId);
     }
-
 }

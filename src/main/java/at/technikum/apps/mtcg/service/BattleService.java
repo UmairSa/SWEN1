@@ -27,10 +27,11 @@ public class BattleService {
         List<Card> player1Deck = cardRepository.findDeckByUserId(player1Id);
         List<Card> player2Deck = cardRepository.findDeckByUserId(player2Id);
 
-        // Check if both players have valid decks
+        // Check if valid decks
         if (player1Deck.isEmpty() || player2Deck.isEmpty()) {
             throw new IllegalArgumentException("One or both players do not have a valid deck");
         }
+
         // Initialize the battle log and outcome variables
         StringBuilder battleLog = new StringBuilder();
         String battleOutcome;
@@ -68,9 +69,9 @@ public class BattleService {
             updateStatsAndCards(player1Id, player2Id);  // Update ELO, wins/losses, and card transfers
         } else if (player2Wins > player1Wins) {
             battleOutcome = "Player 2 wins the battle";
-            updateStatsAndCards(player2Id, player1Id);  // Update ELO, wins/losses, and card transfers
+            updateStatsAndCards(player2Id, player1Id);
         } else {
-            battleOutcome = "The battle is a draw"; // Handle draw scenario, e.g., ELO updates
+            battleOutcome = "The battle is a draw";
         }
 
         // Save the battle record
@@ -91,11 +92,13 @@ public class BattleService {
         // Transfer player2Card to player1Deck
             player1Deck.add(player2Card);
             player2Deck.remove(player2Card);
+
         } else if (player1Card.getDamage() < player2Card.getDamage()) {
             roundResult = "Player 2 wins the round.";
         // Transfer player1Card to player2Deck
             player2Deck.add(player1Card);
             player1Deck.remove(player1Card);
+
         } else {
             roundResult = "The round is a draw.";
         // No card transfer in case of a draw

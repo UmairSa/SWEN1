@@ -66,7 +66,6 @@ public class TradeRepository {
         trade.setMinimumDamage(rs.getDouble("minimumdamage"));
         trade.setUser1Id(rs.getInt("user1id"));
         trade.setUser2Id(rs.getObject("user2id") != null ? rs.getInt("user2id") : null);
-        // You'll need to handle the possibility of user2id being null if the trade hasn't been accepted yet.
         return trade;
     }
     public Optional<Trade> findById(UUID tradeId) {

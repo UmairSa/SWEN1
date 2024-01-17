@@ -24,7 +24,6 @@ public class BattleControllerTest {
     }
 
     @Test
-
     public void testHandlePostRequestForNewBattle() {
 
         Request mockRequest = createMockRequest("POST", "/battles", "Bearer player1-mtcgToken");
@@ -32,7 +31,7 @@ public class BattleControllerTest {
 
         Response response = battleController.handle(mockRequest);
 
-        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode()); // Corrected from getStatus to getStatusCode
+        assertEquals(HttpStatus.OK.getCode(), response.getStatusCode());
         assertNotNull(response.getBody());
     }
 
@@ -43,7 +42,7 @@ public class BattleControllerTest {
 
         Response response = battleController.handle(mockRequest);
 
-        assertEquals(HttpStatus.BAD_REQUEST.getCode(), response.getStatusCode()); // Corrected from getStatus to getStatusCode
+        assertEquals(HttpStatus.BAD_REQUEST.getCode(), response.getStatusCode());
     }
 
     private Request createMockRequest(String method, String route, String authorization) {

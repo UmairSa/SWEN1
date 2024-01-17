@@ -16,12 +16,10 @@ import java.util.Map;
 public class BattleController extends Controller {
     private final BattleService battleService;
     private final Map<String, String> waitingPlayers = new HashMap<>(); // Map to store waiting players
-
     @Override
     public boolean supports(String route) {
         return route.startsWith("/battles");
     }
-
     @Override
     public Response handle(Request request) {
         if (!request.getMethod().equals("POST")) {
@@ -35,7 +33,7 @@ public class BattleController extends Controller {
                 return unauthorizedResponse();
             }
 
-            synchronized (this) {
+            synchronized (this) {   //"Ampel", dass nur ein thread die methode benutzt
                 if (waitingPlayers.containsKey(playerUsername)) {
                     return status(HttpStatus.BAD_REQUEST, "Player already waiting for a battle");
                 }

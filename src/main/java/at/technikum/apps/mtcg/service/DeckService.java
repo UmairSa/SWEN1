@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class DeckService {
-
     private final CardRepository cardRepository;
 
     public List<Card> getDeckByUserId(int userId) {

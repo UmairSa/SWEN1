@@ -43,7 +43,6 @@ public class CurlTest {
     }
     @Test
     void showAllAcquiredCardsWithoutToken() {
-        // Mocking a request without Authorization header
         Request request = new Request();
         request.setMethod(HttpMethod.GET);
         request.setRoute("/cards");

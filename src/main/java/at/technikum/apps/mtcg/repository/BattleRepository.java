@@ -19,7 +19,7 @@ public class BattleRepository {
             pstmt.setString(4, battle.getBattleOutcome());
 
             ResultSet rs = pstmt.executeQuery();
-            if(rs.next()) {
+            if(rs.next()) { //until next row is valid
                 battle.setBattleId(rs.getInt("battleid"));
             }
             return battle;

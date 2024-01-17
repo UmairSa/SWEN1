@@ -16,8 +16,8 @@ public class UserControllerTest {
     class UserControllerTestNest {
 
         private MtcgApp mtcgApp;
-        private final String username = "kienboec"; // Replace with a valid username from your database
-        private final String testToken = "Bearer " + username + "-mtcgToken"; // Replace with a valid token
+        private final String username = "kienboec";
+        private final String testToken = "Bearer " + username + "-mtcgToken";
 
         @BeforeEach
         void setup() {
@@ -59,7 +59,7 @@ public class UserControllerTest {
 
             Request request = new Request();
             request.setMethod(HttpMethod.GET);
-            request.setRoute("/users/" + username); // 'username' is the expected username
+            request.setRoute("/users/" + username);
             request.setAuthorization(mismatchedToken);
 
             Response response = mtcgApp.handle(request);

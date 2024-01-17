@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class CardRepository {
     private final Database database = new Database();
-    private static final Logger logger = Logger.getLogger(CardRepository.class.getName());
+    private static final Logger logger = Logger.getLogger(CardRepository.class.getName());  //for enhanced error handling
 
     public Card save(Card card) {
         String SAVE_CARD_SQL = "INSERT INTO cards (cardid, name, damage, elementtype, cardtype, ownerid, indeck, packageid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
